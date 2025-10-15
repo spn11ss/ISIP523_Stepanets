@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Создать консольное приложение для подсчета потраченных за день средств. 
+// Пользователь вводит количество операций, которые будут записаны. Можно внести от 2 до 40 операций.
+// Дальше, пользователь по шаблону (Название услуги или товара; Количество денег) вводит траты. Валюта - рубли.
+// Пример: (Влажные салфетки "Лента"; 235)
+// После заполнения всех трат, пользователь должен увидеть следующее меню:1.Вывод данных2.Статистика(среднее,
+// максимальное, минимальное, сумма)3.Сортировка по цене(пузырьковая сортировка)4.Конвертация валюты(пользователь
+// вводит курс или выбирает из списка)5.Поиск по названию 0. Выход
+// Выбор пунктов меню осуществляется по соответствующей цифре.
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISIP523_Stepanets
 {
@@ -10,6 +15,16 @@ namespace ISIP523_Stepanets
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("=== УЧЕТ ЕЖЕДНЕВНЫХ РАСХОДОВ ===");
+            // Запрос количества операций
+            int operationsCount;
+            do
+            {
+                Console.Write("Введите количество операций (от 2 до 40): ");
+            } while (!int.TryParse(Console.ReadLine(), out operationsCount) || operationsCount < 2 || operationsCount > 40);
+            // Массивы для хранения данных
+            string[] names = new string[operationsCount];
+            decimal[] amounts = new decimal[operationsCount];
         }
     }
 }
