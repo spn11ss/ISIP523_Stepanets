@@ -166,4 +166,74 @@ namespace ISIP523_Stepanets
                 Console.WriteLine($"Товар с кодом {code} не найден");
             }
         }
+        // Поиск по коду
+        public void SearchByCode(string code)
+        {
+            Product product = products.FirstOrDefault(p => p.Code == code);
+
+            if (product != null)
+            {
+                Console.WriteLine("\nНайден товар:");
+                product.PrintInfo();
+            }
+            else
+            {
+                Console.WriteLine($"Товар с кодом {code} не найден");
+            }
+        }
+
+        // Поиск по названию
+        public void SearchByName(string name)
+        {
+            var foundProducts = products.Where(p => p.Name.ToLower().Contains(name.ToLower())).ToList();
+
+            if (foundProducts.Any())
+            {
+                Console.WriteLine($"\nНайдено товаров: {foundProducts.Count}");
+                foreach (var product in foundProducts)
+                {
+                    product.PrintInfo();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Товары с названием '{name}' не найдены");
+            }
+        }
+
+        // Поиск по категории
+        public void SearchByCategory(ProductCategory category)
+        {
+            var foundProducts = products.Where(p => p.Category == category).ToList();
+
+            if (foundProducts.Any())
+            {
+                Console.WriteLine($"\nТовары в категории '{category}': {foundProducts.Count}");
+                foreach (var product in foundProducts)
+                {
+                    product.PrintInfo();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Товары в категории '{category}' не найдены");
+            }
+        }
+
+        // Показать все товары
+        public void DisplayAllProducts()
+        {
+            if (!products.Any())
+            {
+                Console.WriteLine("Список товаров пуст");
+                return;
+            }
+
+            Console.WriteLine($"\nВсего товаров: {products.Count}");
+            foreach (var product in products)
+            {
+                product.PrintInfo();
+            }
+        }
+    }
 
