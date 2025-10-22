@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -42,6 +43,48 @@ namespace ISIP523_Stepanets
             Console.WriteLine($"В наличии: {(IsInStock ? "Да" : "Нет")}");
             Console.WriteLine($"Категория: {Category}");
             Console.WriteLine(new string('-', 30));
+        }
+    }
+    public class ProductManager
+    {
+        private List<Product> products;
+        private int lastProductId;
+
+        public ProductManager()
+        {
+            products = new List<Product>();
+            lastProductId = 0; // Начинаем с 1001
+        }
+
+        // Генерация уникального кода товара
+        private string GenerateProductCode()
+        {
+            lastProductId++;
+            return lastProductId.ToString();
+        }
+
+        // Валидация вводимых данных
+        private bool ValidateProductData(string name, decimal price, int quantity)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Ошибка: Название товара не может быть пустым!");
+                return false;
+            }
+
+            if (price <= 0)
+            {
+                Console.WriteLine("Ошибка: Цена должна быть положительной!");
+                return false;
+            }
+
+            if (quantity < 0)
+            {
+                Console.WriteLine("Ошибка: Количество не может быть отрицательным!");
+                return false;
+            }
+
+            return true;
         }
     }
 }
