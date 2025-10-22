@@ -198,5 +198,34 @@ namespace ISIP523_Stepanets
 
             return words.ToArray();
         }
+        // Подсчет количества предложений
+        static int CountSentences(string text)
+        {
+            int count = 0;
+            bool inSentence = false;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+
+                if (char.IsLetter(c) && !inSentence)
+                {
+                    inSentence = true;
+                }
+                else if ((c == '.' || c == '!' || c == '?') && inSentence)
+                {
+                    count++;
+                    inSentence = false;
+                }
+            }
+
+            // Если текст заканчивается без точки, считаем последнее предложение
+            if (inSentence)
+            {
+                count++;
+            }
+
+            return count;
+        }
     }
 }
