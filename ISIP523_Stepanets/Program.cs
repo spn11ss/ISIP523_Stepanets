@@ -104,8 +104,8 @@ namespace LibraryManagement
         // некоторые данные
         static void InitializeTestData()
         {
-            books.Add(new Book(nextId++, "Властелин Колец", "Дж. Р. Р. Толкин", Genre.Fantasy, 1954, 1200));
-            books.Add(new Book(nextId++, "1984", "Джордж Оруэлл", Genre.ScienceFiction, 1949, 800));
+            books.Add(new Book(nextId++, "Властелин Колец", "Дж.ПУПУ", Genre.Fantasy, 1954, 1200));
+            books.Add(new Book(nextId++, "Пупу", "Джордж Ору", Genre.ScienceFiction, 1949, 800));
             books.Add(new Book(nextId++, "Убийство в Восточном экспрессе", "Агата Кристи", Genre.Mystery, 1934, 650));
             books.Add(new Book(nextId++, "Гордость и предубеждение", "Джейн Остин", Genre.Romance, 1813, 550));
             books.Add(new Book(nextId++, "Мастер и Маргарита", "Михаил Булгаков", Genre.Fantasy, 1967, 900));
