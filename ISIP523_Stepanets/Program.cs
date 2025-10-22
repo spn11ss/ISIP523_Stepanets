@@ -227,5 +227,39 @@ namespace ISIP523_Stepanets
 
             return count;
         }
-    }
-}
+        // Подсчет гласных, согласных и частоты букв
+        static void CountLetters(string text, TextStatistics stats)
+        {
+            stats.VowelCount = 0;
+            stats.ConsonantCount = 0;
+            stats.LetterFrequency.Clear();
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = char.ToLower(text[i]);
+
+                // Проверяем, является ли символ буквой
+                if (char.IsLetter(c))
+                {
+                    // Обновляем частоту букв
+                    if (stats.LetterFrequency.ContainsKey(c))
+                    {
+                        stats.LetterFrequency[c]++;
+                    }
+                    else
+                    {
+                        stats.LetterFrequency[c] = 1;
+                    }
+
+                    // Подсчет гласных и согласных
+                    if (vowels.Contains(c))
+                    {
+                        stats.VowelCount++;
+                    }
+                    else if (consonants.Contains(c))
+                    {
+                        stats.ConsonantCount++;
+                    }
+                }
+            }
+        }
