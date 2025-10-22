@@ -7,6 +7,7 @@
 // вводит курс или выбирает из списка)5.Поиск по названию 0. Выход
 // Выбор пунктов меню осуществляется по соответствующей цифре.
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace ISIP523_Stepanets
@@ -25,6 +26,46 @@ namespace ISIP523_Stepanets
             // Массивы для хранения данных
             string[] names = new string[operationsCount];
             decimal[] amounts = new decimal[operationsCount];
+
+            // Ввод данных о расходах
+            Console.WriteLine("\n Введите расходы в формате: Название; Сумма");
+            Console.WriteLine("Пример: Влажные салфетки \"Лента\"; 235");
+
+            for (int i = 0; i < operationsCount; i++)
+            {
+                bool validInput = false;
+                while (!validInput)
+                {
+                    Console.Write($"Операция {i + 1}: ");
+                    string input = Console.ReadLine();
+
+                    // Разделение ввода по точке с запятой
+                    string[] parts = input.Split(';');
+
+                    if (parts.Length == 2)
+                    {
+                        string name = parts[0].Trim();
+                        if (!string.IsNullOrWhiteSpace(name) &&
+                            decimal.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount) &&
+                            amount > 0)
+                        {
+                            names[i] = name;
+                            amounts[i] = amount;
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка: Неверный формат суммы! Сумма должна быть положительным числом.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: Неверный формат! Используйте: Название; Сумма");
+                    }
+
+                }
+            }
+
         }
     }
 }
