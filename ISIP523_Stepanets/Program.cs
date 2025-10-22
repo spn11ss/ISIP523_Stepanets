@@ -284,4 +284,46 @@ namespace LibraryManagement
                 Console.WriteLine("Книги по заданным критериям не найдены.");
             }
         }
+        // Сортировка книг по различным критериям
+        static void SortBooks()
+        {
+            Console.WriteLine("\n=== СОРТИРОВКА КНИГ ===");
+            Console.WriteLine("1. По названию (А-Я)");
+            Console.WriteLine("2. По названию (Я-А)");
+            Console.WriteLine("3. По году издания (по возрастанию)");
+            Console.WriteLine("4. По году издания (по убыванию)");
+            Console.Write("Выберите тип сортировки: ");
+
+            string sortType = Console.ReadLine();
+            IEnumerable<Book> sortedBooks = null;
+
+            switch (sortType)
+            {
+                case "1":
+                    // LINQ: сортировка по названию (по возрастанию)
+                    sortedBooks = books.OrderBy(b => b.Title);
+                    break;
+                case "2":
+                    // LINQ: сортировка по названию (по убыванию)
+                    sortedBooks = books.OrderByDescending(b => b.Title);
+                    break;
+                case "3":
+                    // LINQ: сортировка по году (по возрастанию)
+                    sortedBooks = books.OrderBy(b => b.Year);
+                    break;
+                case "4":
+                    // LINQ: сортировка по году (по убыванию)
+                    sortedBooks = books.OrderByDescending(b => b.Year);
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор!");
+                    return;
+            }
+
+            Console.WriteLine("\n=== ОТСОРТИРОВАННЫЕ КНИГИ ===");
+            foreach (var book in sortedBooks)
+            {
+                book.DisplayInfo();
+            }
+        }
     }
