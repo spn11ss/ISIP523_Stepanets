@@ -190,5 +190,31 @@ namespace LibraryManagement
             books.Add(newBook);
             Console.WriteLine($"Книга '{title}' успешно добавлена с ID {newBook.Id}");
         }
+        // Удаление книги по ID
+        static void RemoveBook()
+        {
+            Console.WriteLine("\n=== УДАЛЕНИЕ КНИГИ ===");
+            Console.Write("Введите ID книги для удаления: ");
+
+            if (int.TryParse(Console.ReadLine(), out int id))
+            {
+                // LINQ поиск книги по ID
+                Book bookToRemove = books.FirstOrDefault(b => b.Id == id);
+
+                if (bookToRemove != null)
+                {
+                    books.Remove(bookToRemove);
+                    Console.WriteLine($"Книга '{bookToRemove.Title}' успешно удалена.");
+                }
+                else
+                {
+                    Console.WriteLine($"Книга с ID {id} не найдена.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Неверный формат ID!");
+            }
+        }
 
     }
