@@ -347,5 +347,50 @@ namespace LibraryManagement
             Console.WriteLine("Самая дешевая книга:");
             cheapest.DisplayInfo();
         }
+        // Группировка книг по авторам
+        static void GroupByAuthors()
+        {
+            if (!books.Any())
+            {
+                Console.WriteLine("В библиотеке нет книг.");
+                return;
+            }
+
+            Console.WriteLine("\n=== ГРУППИРОВКА КНИГ ПО АВТОРАМ ===");
+
+            // LINQ: группировка по авторам и сортировка по количеству книг
+            var booksByAuthor = books.GroupBy(b => b.Author)
+                                    .OrderByDescending(g => g.Count())
+                                    .ThenBy(g => g.Key);
+
+            foreach (var authorGroup in booksByAuthor)
+            {
+                Console.WriteLine($"\nАвтор: {authorGroup.Key}");
+                Console.WriteLine($"Количество книг: {authorGroup.Count()}");
+                Console.WriteLine("Книги:");
+
+                // Вывод книг автора, отсортированных по году
+                foreach (var book in authorGroup.OrderBy(b => b.Year))
+                {
+                    Console.WriteLine($"  - {book.Title} ({book.Year}) - {book.Price:C}");
+                }
+            }
+        }
+
+        // Отображение всех книг
+        static void DisplayAllBooks()
+        {
+            if (!books.Any())
+            {
+                Console.WriteLine("В библиотеке нет книг.");
+                return;
+            }
+
+            Console.WriteLine($"\n=== ВСЕ КНИГИ (всего: {books.Count}) ===");
+            foreach (var book in books)
+            {
+                book.DisplayInfo();
+            }
+        }
     }
 }
