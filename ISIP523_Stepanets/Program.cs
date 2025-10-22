@@ -36,5 +36,17 @@ namespace LibraryManagement
             Year = year;
             Price = price;
         }
+        // Метод для вывода информации о книге
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"ID: {Id}");
+            Console.WriteLine($"Название: {Title}");
+            Console.WriteLine($"Автор: {Author}");
+            Console.WriteLine($"Жанр: {Genre}");
+            Console.WriteLine($"Год издания: {Year}");
+            Console.WriteLine($"Цена: {Price:C}");
+            Console.WriteLine(new string('-', 40));
+        }
     }
+}
 }
