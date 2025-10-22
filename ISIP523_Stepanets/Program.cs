@@ -1,15 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ISIP523_Stepanets
+namespace LibraryManagement
 {
-    internal class Program
+    // Перечисление жанров книг
+    public enum Genre
     {
-        static void Main(string[] args)
+        Fantasy,        // Фэнтези
+        ScienceFiction, // Научная фантастика
+        Mystery,        // Детектив
+        Romance,        // Роман
+        Historical,     // Исторический
+        Biography,      // Биография
+        Thriller        // Триллер
+    }
+
+    // Класс для представления книги
+    public class Book
+    {
+        public int Id { get; set; }          // Уникальный идентификатор
+        public string Title { get; set; }    // Название
+        public string Author { get; set; }   // Автор
+        public Genre Genre { get; set; }     // Жанр
+        public int Year { get; set; }        // Год издания
+        public decimal Price { get; set; }   // Цена
+
+        // Конструктор
+        public Book(int id, string title, string author, Genre genre, int year, decimal price)
         {
+            Id = id;
+            Title = title;
+            Author = author;
+            Genre = genre;
+            Year = year;
+            Price = price;
         }
     }
 }
