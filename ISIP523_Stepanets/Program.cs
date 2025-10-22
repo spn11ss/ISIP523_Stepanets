@@ -326,4 +326,26 @@ namespace LibraryManagement
                 book.DisplayInfo();
             }
         }
+        // Поиск самой дорогой и дешевой книги
+        static void FindExtremePriceBooks()
+        {
+            if (!books.Any())
+            {
+                Console.WriteLine("В библиотеке нет книг.");
+                return;
+            }
+
+            Console.WriteLine("\n=== САМАЯ ДОРОГАЯ И ДЕШЕВАЯ КНИГА ===");
+
+            // LINQ: поиск самой дорогой книги
+            Book mostExpensive = books.OrderByDescending(b => b.Price).First();
+            Console.WriteLine("Самая дорогая книга:");
+            mostExpensive.DisplayInfo();
+
+            // LINQ: поиск самой дешевой книги
+            Book cheapest = books.OrderBy(b => b.Price).First();
+            Console.WriteLine("Самая дешевая книга:");
+            cheapest.DisplayInfo();
+        }
     }
+}
