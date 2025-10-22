@@ -48,5 +48,58 @@ namespace LibraryManagement
             Console.WriteLine(new string('-', 40));
         }
     }
-}
-}
+    class Program
+    {
+        private static List<Book> books = new List<Book>(); // Список всех книг
+        private static int nextId = 1; // Счетчик для генерации ID
+
+        static void Main(string[] args)
+        {
+            // Инициализация тестовыми данными
+            InitializeTestData();
+
+            bool exit = false;
+            while (!exit)
+            {
+                DisplayMenu();
+                string choice = Console.ReadLine();
+
+                // Обработка выбора пользователя
+                switch (choice)
+                {
+                    case "1": AddBook(); break;
+                    case "2": RemoveBook(); break;
+                    case "3": SearchBooks(); break;
+                    case "4": SortBooks(); break;
+                    case "5": FindExtremePriceBooks(); break;
+                    case "6": GroupByAuthors(); break;
+                    case "7": DisplayAllBooks(); break;
+                    case "0": exit = true; Console.WriteLine("До свидания!"); break;
+                    default: Console.WriteLine("Неверный выбор! Попробуйте снова."); break;
+                }
+
+                if (!exit)
+                {
+                    Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+            }
+        }
+
+        // Отображение главного меню
+        static void DisplayMenu()
+        {
+            Console.WriteLine("=== СИСТЕМА УПРАВЛЕНИЯ БИБЛИОТЕКОЙ ===");
+            Console.WriteLine("1. Добавить книгу");
+            Console.WriteLine("2. Удалить книгу по ID");
+            Console.WriteLine("3. Найти книги");
+            Console.WriteLine("4. Отсортировать книги");
+            Console.WriteLine("5. Самая дорогая и дешевая книга");
+            Console.WriteLine("6. Группировка по авторам");
+            Console.WriteLine("7. Показать все книги");
+            Console.WriteLine("0. Выход");
+            Console.Write("Выберите действие: ");
+        }
+
+    }
