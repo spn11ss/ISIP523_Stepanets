@@ -102,6 +102,63 @@ namespace ISIP523_Stepanets
             Console.WriteLine("3. Выход");
             Console.Write("Выберите действие: ");
         }
+        static void AnalyzeNewText()
+        {
+            Console.WriteLine("\n=== АНАЛИЗ НОВОГО ТЕКСТА ===");
+            Console.WriteLine("Введите текст (минимум 100 символов):");
+            
+            string text;
+            do
+            {
+                text = Console.ReadLine();
+                if (text.Length < 100)
+                {
+                    Console.WriteLine($"Текст слишком короткий! Введено {text.Length} символов. Нужно минимум 100.");
+                    Console.Write("Пожалуйста, введите текст еще раз: ");
+                }
+            } while (text.Length < 100);
 
+            TextStatistics stats = AnalyzeText(text);
+            allStatistics.Add(stats);
+            stats.DisplayStatistics();
+        }
+
+        static TextStatistics AnalyzeText(string text)
+        {
+            TextStatistics stats = new TextStatistics
+            {
+                Text = text,
+                AnalysisTime = DateTime.Now
+            };
+
+            // Подсчет слов и поиск самого короткого/длинного слова
+            string[] words = SplitTextIntoWords(text);
+            stats.WordCount = words.Length;
+            
+            if (words.Length > 0)
+            {
+                stats.ShortestWord = words[0];
+                stats.LongestWord = words[0];
+
+                for (int i = 0; i < words.Length; i++)
+                {
+                    string word = words[i];
+                    
+                    // Поиск самого короткого слова
+                    if (word.Length < stats.ShortestWord.Length)
+                    {
+                        stats.ShortestWord = word;
+                    }
+                    
+                    // Поиск самого длинного слова
+                    if (word.Length > stats.LongestWord.Length)
+                    {
+                        stats.LongestWord = word;
+                    }
+                }
+            }
+
+            
+}
     }
 }
