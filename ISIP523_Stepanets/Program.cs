@@ -263,3 +263,48 @@ namespace ISIP523_Stepanets
                 }
             }
         }
+        static void ShowAllStatistics()
+        {
+            if (allStatistics.Count == 0)
+            {
+                Console.WriteLine("Статистика отсутствует. Сначала проанализируйте тексты.");
+                return;
+            }
+
+            Console.WriteLine($"\n=== СТАТИСТИКА ПО ВСЕМ ТЕКСТАМ (всего: {allStatistics.Count}) ===");
+
+            for (int i = 0; i < allStatistics.Count; i++)
+            {
+                Console.WriteLine($"\n--- Текст #{i + 1} ---");
+                Console.WriteLine($"Время анализа: {allStatistics[i].AnalysisTime}");
+                Console.WriteLine($"Количество слов: {allStatistics[i].WordCount}");
+                Console.WriteLine($"Количество предложений: {allStatistics[i].SentenceCount}");
+                Console.WriteLine($"Общее количество букв: {allStatistics[i].VowelCount + allStatistics[i].ConsonantCount}");
+
+                // Показываем начало текста (первые 50 символов)
+                string preview = allStatistics[i].Text.Length > 50
+                    ? allStatistics[i].Text.Substring(0, 50) + "..."
+                    : allStatistics[i].Text;
+                Console.WriteLine($"Предпросмотр: {preview}");
+            }
+
+            // Общая статистика по всем текстам
+            Console.WriteLine("\n--- ОБЩАЯ СТАТИСТИКА ---");
+            int totalWords = 0;
+            int totalSentences = 0;
+            int totalLetters = 0;
+
+            for (int i = 0; i < allStatistics.Count; i++)
+            {
+                totalWords += allStatistics[i].WordCount;
+                totalSentences += allStatistics[i].SentenceCount;
+                totalLetters += allStatistics[i].VowelCount + allStatistics[i].ConsonantCount;
+            }
+
+            Console.WriteLine($"Всего слов: {totalWords}");
+            Console.WriteLine($"Всего предложений: {totalSentences}");
+            Console.WriteLine($"Всего букв: {totalLetters}");
+            Console.WriteLine($"Среднее количество слов на текст: {totalWords / allStatistics.Count}");
+        }
+    }
+}
