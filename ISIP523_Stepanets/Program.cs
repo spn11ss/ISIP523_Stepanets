@@ -216,5 +216,72 @@ namespace LibraryManagement
                 Console.WriteLine("Неверный формат ID!");
             }
         }
+        // Поиск книг по различным критериям
+        static void SearchBooks()
+        {
+            Console.WriteLine("\n=== ПОИСК КНИГ ===");
+            Console.WriteLine("1. По названию");
+            Console.WriteLine("2. По автору");
+            Console.WriteLine("3. По жанру");
+            Console.Write("Выберите тип поиска: ");
 
+            string searchType = Console.ReadLine();
+            IEnumerable<Book> results = null;
+
+            switch (searchType)
+            {
+                case "1": // Поиск по названию
+                    Console.Write("Введите название для поиска: ");
+                    string title = Console.ReadLine();
+                    // LINQ: поиск по подстроке в названии (без учета регистра)
+                    results = books.Where(b => b.Title.ToLower().Contains(title.ToLower()));
+                    break;
+
+                case "2": // Поиск по автору
+                    Console.Write("Введите автора для поиска: ");
+                    string author = Console.ReadLine();
+                    // LINQ: поиск по подстроке в авторе (без учета регистра)
+                    results = books.Where(b => b.Author.ToLower().Contains(author.ToLower()));
+                    break;
+
+                case "3": // Поиск по жанру
+                    Console.WriteLine("Выберите жанр:");
+                    var genres = Enum.GetValues(typeof(Genre));
+                    for (int i = 0; i < genres.Length; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {genres.GetValue(i)}");
+                    }
+                    if (int.TryParse(Console.ReadLine(), out int genreIndex) && genreIndex >= 1 && genreIndex <= genres.Length)
+                    {
+                        Genre selectedGenre = (Genre)(genreIndex - 1);
+                        // LINQ: поиск по точному совпадению жанра
+                        results = books.Where(b => b.Genre == selectedGenre);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверный выбор жанра!");
+                        return;
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Неверный выбор!");
+                    return;
+            }
+
+            // Вывод результатов поиска
+            var resultList = results.ToList();
+            if (resultList.Any())
+            {
+                Console.WriteLine($"\nНайдено книг: {resultList.Count}");
+                foreach (var book in resultList)
+                {
+                    book.DisplayInfo();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Книги по заданным критериям не найдены.");
+            }
+        }
     }
