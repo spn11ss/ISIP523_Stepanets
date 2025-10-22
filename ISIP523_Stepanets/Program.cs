@@ -65,7 +65,51 @@ namespace ISIP523_Stepanets
 
                 }
             }
+            // Основное меню
+            bool exit = false;
+            while (!exit)
+            {
+                Console.WriteLine("\n=== ГЛАВНОЕ МЕНЮ ===");
+                Console.WriteLine("1. Вывод данных");
+                Console.WriteLine("2. Статистика");
+                Console.WriteLine("3. Сортировка по цене (пузырьковая)");
+                Console.WriteLine("4. Конвертация валюты");
+                Console.WriteLine("5. Поиск по названию");
+                Console.WriteLine("0. Выход");
+                Console.Write("Выберите действие: ");
 
+                string choice = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        DisplayData(names, amounts);
+                        break;
+                    case "2":
+                        ShowStatistics(amounts);
+                        break;
+                    case "3":
+                        BubbleSort(names, amounts);
+                        Console.WriteLine("Данные отсортированы по цене!");
+                        break;
+                    case "4":
+                        ConvertCurrency(amounts);
+                        break;
+                    case "5":
+                        SearchByName(names, amounts);
+                        break;
+                    case "0":
+                        exit = true;
+                        Console.WriteLine("До свидания!");
+                        break;
+                    default:
+                        Console.WriteLine("Неверный выбор!");
+                        break;
+                }
+            }
         }
+
+    }
     }
 }
