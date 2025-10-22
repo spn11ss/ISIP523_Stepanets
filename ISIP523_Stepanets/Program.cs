@@ -106,7 +106,7 @@ namespace ISIP523_Stepanets
         {
             Console.WriteLine("\n=== АНАЛИЗ НОВОГО ТЕКСТА ===");
             Console.WriteLine("Введите текст (минимум 100 символов):");
-            
+
             string text;
             do
             {
@@ -134,7 +134,7 @@ namespace ISIP523_Stepanets
             // Подсчет слов и поиск самого короткого/длинного слова
             string[] words = SplitTextIntoWords(text);
             stats.WordCount = words.Length;
-            
+
             if (words.Length > 0)
             {
                 stats.ShortestWord = words[0];
@@ -143,13 +143,13 @@ namespace ISIP523_Stepanets
                 for (int i = 0; i < words.Length; i++)
                 {
                     string word = words[i];
-                    
+
                     // Поиск самого короткого слова
                     if (word.Length < stats.ShortestWord.Length)
                     {
                         stats.ShortestWord = word;
                     }
-                    
+
                     // Поиск самого длинного слова
                     if (word.Length > stats.LongestWord.Length)
                     {
@@ -157,8 +157,46 @@ namespace ISIP523_Stepanets
                     }
                 }
             }
+            // Подсчет предложений
+            stats.SentenceCount = CountSentences(text);
 
-            
-}
+            // Подсчет гласных, согласных и частоты букв
+            CountLetters(text, stats);
+
+            return stats;
+        }
+
+        // Разделение текста на слова
+        static string[] SplitTextIntoWords(string text)
+        {
+            List<string> words = new List<string>();
+            StringBuilder currentWord = new StringBuilder();
+
+            // Проходим по каждому символу в тексте
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+
+                // Если символ - буква, добавляем его к текущему слову
+                if (char.IsLetter(c))
+                {
+                    currentWord.Append(c);
+                }
+                // Если не буква и у нас есть накопленное слово - добавляем его в список
+                else if (currentWord.Length > 0)
+                {
+                    words.Add(currentWord.ToString());
+                    currentWord.Clear();
+                }
+            }
+
+            // Добавляем последнее слово, если оно есть
+            if (currentWord.Length > 0)
+            {
+                words.Add(currentWord.ToString());
+            }
+
+            return words.ToArray();
+        }
     }
 }
