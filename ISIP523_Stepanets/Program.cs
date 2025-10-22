@@ -236,4 +236,77 @@ namespace ISIP523_Stepanets
             }
         }
     }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ProductManager manager = new ProductManager();
+            InitializeTestData(manager);
 
+            bool exit = false;
+
+            while (!exit)
+            {
+                DisplayMenu();
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        AddProductMenu(manager);
+                        break;
+                    case "2":
+                        RemoveProductMenu(manager);
+                        break;
+                    case "3":
+                        OrderSupplyMenu(manager);
+                        break;
+                    case "4":
+                        SellProductMenu(manager);
+                        break;
+                    case "5":
+                        SearchMenu(manager);
+                        break;
+                    case "6":
+                        manager.DisplayAllProducts();
+                        break;
+                    case "7":
+                        exit = true;
+                        Console.WriteLine("До свидания!");
+                        break;
+                    default:
+                        Console.WriteLine("Неверный выбор! Попробуйте снова.");
+                        break;
+                }
+
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        static void InitializeTestData(ProductManager manager)
+        {
+            // Добавляем 5 тестовых товаров
+            manager.AddProduct("Смартфон Samsung", 25000, 10, ProductCategory.Electronics);
+            manager.AddProduct("Футболка хлопковая", 1500, 25, ProductCategory.Clothing);
+            manager.AddProduct("Война и мир", 800, 15, ProductCategory.Books);
+            manager.AddProduct("Шоколад Alpen Gold", 120, 50, ProductCategory.Food);
+            manager.AddProduct("Футбольный мяч", 3000, 8, ProductCategory.Sports);
+
+            Console.WriteLine("Тестовые данные загружены успешно!\n");
+        }
+
+        static void DisplayMenu()
+        {
+            Console.WriteLine("=== СИСТЕМА УЧЁТА ТОВАРОВ ===");
+            Console.WriteLine("1. Добавить товар");
+            Console.WriteLine("2. Удалить товар");
+            Console.WriteLine("3. Заказать поставку");
+            Console.WriteLine("4. Продать товар");
+            Console.WriteLine("5. Поиск товаров");
+            Console.WriteLine("6. Показать все товары");
+            Console.WriteLine("7. Выход");
+            Console.Write("Выберите действие: ");
+        }
+    }
