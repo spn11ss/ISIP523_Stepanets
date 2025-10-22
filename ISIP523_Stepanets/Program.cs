@@ -41,6 +41,7 @@ namespace ISIP523_Stepanets
             Console.WriteLine(new string('=', 40));
         }
     }
+
     class Program
     {
         private static List<TextStatistics> allStatistics = new List<TextStatistics>();
@@ -74,7 +75,7 @@ namespace ISIP523_Stepanets
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Функция анализа текста будет реализована в следующем коммите");
+                        AnalyzeNewText();
                         break;
                     case "2":
                         ShowAllStatistics();
@@ -102,6 +103,7 @@ namespace ISIP523_Stepanets
             Console.WriteLine("3. Выход");
             Console.Write("Выберите действие: ");
         }
+
         static void AnalyzeNewText()
         {
             Console.WriteLine("\n=== АНАЛИЗ НОВОГО ТЕКСТА ===");
@@ -157,6 +159,7 @@ namespace ISIP523_Stepanets
                     }
                 }
             }
+
             // Подсчет предложений
             stats.SentenceCount = CountSentences(text);
 
@@ -198,6 +201,7 @@ namespace ISIP523_Stepanets
 
             return words.ToArray();
         }
+
         // Подсчет количества предложений
         static int CountSentences(string text)
         {
@@ -227,6 +231,7 @@ namespace ISIP523_Stepanets
 
             return count;
         }
+
         // Подсчет гласных, согласных и частоты букв
         static void CountLetters(string text, TextStatistics stats)
         {
@@ -263,6 +268,7 @@ namespace ISIP523_Stepanets
                 }
             }
         }
+
         static void ShowAllStatistics()
         {
             if (allStatistics.Count == 0)
