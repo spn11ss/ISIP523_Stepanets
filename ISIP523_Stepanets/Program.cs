@@ -110,7 +110,7 @@ namespace LibraryManagement
             books.Add(new Book(nextId++, "Гордость и предубеждение", "Джейн Остин", Genre.Romance, 1813, 550));
             books.Add(new Book(nextId++, "Мастер и Маргарита", "Михаил Булгаков", Genre.Fantasy, 1967, 900));
 
-            Console.WriteLine("Тестовые данные добавлены успешно!\n");
+            Console.WriteLine("Данные добавлены\n");
         }
         // Добавление новой книги с валидацией
         static void AddBook()
