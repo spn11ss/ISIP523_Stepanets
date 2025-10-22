@@ -112,5 +112,83 @@ namespace LibraryManagement
 
             Console.WriteLine("Тестовые данные добавлены успешно!\n");
         }
+        // Добавление новой книги с валидацией
+        static void AddBook()
+        {
+            Console.WriteLine("\n=== ДОБАВЛЕНИЕ НОВОЙ КНИГИ ===");
+
+            // Ввод названия с проверкой на пустоту
+            string title;
+            do
+            {
+                Console.Write("Введите название книги: ");
+                title = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    Console.WriteLine("Название не может быть пустым!");
+                }
+            } while (string.IsNullOrWhiteSpace(title));
+
+            // Ввод автора с проверкой на пустоту
+            string author;
+            do
+            {
+                Console.Write("Введите автора книги: ");
+                author = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(author))
+                {
+                    Console.WriteLine("Автор не может быть пустым!");
+                }
+            } while (string.IsNullOrWhiteSpace(author));
+
+            // Выбор жанра из списка
+            Console.WriteLine("Выберите жанр:");
+            var genres = Enum.GetValues(typeof(Genre));
+            for (int i = 0; i < genres.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {genres.GetValue(i)}");
+            }
+
+            Genre genre;
+            while (true)
+            {
+                Console.Write("Введите номер жанра: ");
+                if (int.TryParse(Console.ReadLine(), out int genreIndex) && genreIndex >= 1 && genreIndex <= genres.Length)
+                {
+                    genre = (Genre)(genreIndex - 1);
+                    break;
+                }
+                Console.WriteLine("Неверный номер жанра!");
+            }
+
+            // Ввод года с валидацией
+            int year;
+            while (true)
+            {
+                Console.Write("Введите год издания: ");
+                if (int.TryParse(Console.ReadLine(), out year) && year > 0 && year <= DateTime.Now.Year)
+                {
+                    break;
+                }
+                Console.WriteLine($"Год должен быть положительным числом не больше {DateTime.Now.Year}!");
+            }
+
+            // Ввод цены с валидацией
+            decimal price;
+            while (true)
+            {
+                Console.Write("Введите цену книги: ");
+                if (decimal.TryParse(Console.ReadLine(), out price) && price > 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Цена должна быть положительным числом!");
+            }
+
+            // Создание и добавление новой книги
+            Book newBook = new Book(nextId++, title, author, genre, year, price);
+            books.Add(newBook);
+            Console.WriteLine($"Книга '{title}' успешно добавлена с ID {newBook.Id}");
+        }
 
     }
