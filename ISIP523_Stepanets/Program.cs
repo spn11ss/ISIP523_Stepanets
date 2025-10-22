@@ -86,5 +86,84 @@ namespace ISIP523_Stepanets
 
             return true;
         }
-    }
-}
+        // Добавление товара
+        public void AddProduct(string name, decimal price, int quantity, ProductCategory category)
+        {
+            if (!ValidateProductData(name, price, quantity))
+                return;
+
+            string code = GenerateProductCode();
+            Product newProduct = new Product(code, name, price, quantity, category);
+            products.Add(newProduct);
+            Console.WriteLine($"Товар '{name}' успешно добавлен с кодом {code}");
+        }
+
+        // Удаление товара
+        public void RemoveProduct(string code)
+        {
+            Product productToRemove = products.FirstOrDefault(p => p.Code == code);
+
+            if (productToRemove != null)
+            {
+                products.Remove(productToRemove);
+                Console.WriteLine($"Товар с кодом {code} успешно удален");
+            }
+            else
+            {
+                Console.WriteLine($"Товар с кодом {code} не найден");
+            }
+        }
+
+        // Заказ поставки товара
+        public void OrderSupply(string code, int quantity)
+        {
+            if (quantity <= 0)
+            {
+                Console.WriteLine("Ошибка: Количество для поставки должно быть положительным!");
+                return;
+            }
+
+            Product product = products.FirstOrDefault(p => p.Code == code);
+
+            if (product != null)
+            {
+                product.Quantity += quantity;
+                Console.WriteLine($"Поставка товара {product.Name}: +{quantity} единиц. Теперь в наличии: {product.Quantity}");
+            }
+            else
+            {
+                Console.WriteLine($"Товар с кодом {code} не найден");
+            }
+        }
+
+        // Продажа товара
+        public void SellProduct(string code, int quantity)
+        {
+            if (quantity <= 0)
+            {
+                Console.WriteLine("Ошибка: Количество для продажи должно быть положительным!");
+                return;
+            }
+
+            Product product = products.FirstOrDefault(p => p.Code == code);
+
+            if (product != null)
+            {
+                if (product.Quantity >= quantity)
+                {
+                    product.Quantity -= quantity;
+                    decimal total = product.Price * quantity;
+                    Console.WriteLine($"Продажа товара {product.Name}: -{quantity} единиц. Остаток: {product.Quantity}");
+                    Console.WriteLine($"Общая стоимость: {total:C}");
+                }
+                else
+                {
+                    Console.WriteLine($"Недостаточно товара на складе! В наличии: {product.Quantity}, запрошено: {quantity}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Товар с кодом {code} не найден");
+            }
+        }
+
