@@ -309,4 +309,122 @@ namespace ISIP523_Stepanets
             Console.WriteLine("7. Выход");
             Console.Write("Выберите действие: ");
         }
+     static void AddProductMenu(ProductManager manager)
+        {
+            Console.Write("Введите название товара: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Введите цену: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal price))
+            {
+                Console.WriteLine("Ошибка ввода цены!");
+                return;
+            }
+
+            Console.Write("Введите количество: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity))
+            {
+                Console.WriteLine("Ошибка ввода количества!");
+                return;
+            }
+
+            Console.WriteLine("Выберите категорию:");
+            var categories = Enum.GetValues(typeof(ProductCategory));
+            for (int i = 0; i < categories.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {categories.GetValue(i)}");
+            }
+
+            if (!int.TryParse(Console.ReadLine(), out int categoryIndex) || categoryIndex < 1 || categoryIndex > categories.Length)
+            {
+                Console.WriteLine("Ошибка выбора категории!");
+                return;
+            }
+
+            ProductCategory category = (ProductCategory)(categoryIndex - 1);
+            manager.AddProduct(name, price, quantity, category);
+        }
+
+        static void RemoveProductMenu(ProductManager manager)
+        {
+            Console.Write("Введите код товара для удаления: ");
+            string code = Console.ReadLine();
+            manager.RemoveProduct(code);
+        }
+
+        static void OrderSupplyMenu(ProductManager manager)
+        {
+            Console.Write("Введите код товара: ");
+            string code = Console.ReadLine();
+
+            Console.Write("Введите количество для поставки: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity))
+            {
+                Console.WriteLine("Ошибка ввода количества!");
+                return;
+            }
+
+            manager.OrderSupply(code, quantity);
+        }
+
+        static void SellProductMenu(ProductManager manager)
+        {
+            Console.Write("Введите код товара: ");
+            string code = Console.ReadLine();
+
+            Console.Write("Введите количество для продажи: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity))
+            {
+                Console.WriteLine("Ошибка ввода количества!");
+                return;
+            }
+
+            manager.SellProduct(code, quantity);
+        }
+
+        static void SearchMenu(ProductManager manager)
+        {
+            Console.WriteLine("Поиск по:");
+            Console.WriteLine("1. Коду товара");
+            Console.WriteLine("2. Названию");
+            Console.WriteLine("3. Категории");
+            Console.Write("Выберите тип поиска: ");
+
+            string searchType = Console.ReadLine();
+
+            switch (searchType)
+            {
+                case "1":
+                    Console.Write("Введите код товара: ");
+                    string code = Console.ReadLine();
+                    manager.SearchByCode(code);
+                    break;
+                case "2":
+                    Console.Write("Введите название товара: ");
+                    string name = Console.ReadLine();
+                    manager.SearchByName(name);
+                    break;
+                case "3":
+                    Console.WriteLine("Выберите категорию:");
+                    var categories = Enum.GetValues(typeof(ProductCategory));
+                    for (int i = 0; i < categories.Length; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {categories.GetValue(i)}");
+                    }
+
+                    if (!int.TryParse(Console.ReadLine(), out int categoryIndex) || categoryIndex < 1 || categoryIndex > categories.Length)
+                    {
+                        Console.WriteLine("Ошибка выбора категории!");
+                        return;
+                    }
+
+                    ProductCategory category = (ProductCategory)(categoryIndex - 1);
+                    manager.SearchByCategory(category);
+                    break;
+                default:
+                    Console.WriteLine("Неверный выбор!");
+                    break;
+            }
+        }
     }
+}
