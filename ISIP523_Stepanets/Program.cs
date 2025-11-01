@@ -117,4 +117,83 @@ public class Game
         }
     }
 
-    
+    private void StartCombat(Enemy enemy)
+    {
+        Console.WriteLine($"Бой с {enemy.Name}!");
+        Console.WriteLine($"Здоровье врага: {enemy.Health}");
+
+        while (enemy.IsAlive && player.IsAlive)
+        {
+            PlayerTurn(enemy);
+            if (enemy.IsAlive)
+                EnemyTurn(enemy);
+        }
+
+        if (enemy.IsAlive) return;
+
+        Console.WriteLine($"Вы победили {enemy.Name}!");
+        if (random.NextDouble() < 0.3)
+        {
+            Console.WriteLine("Противник выронил зелье здоровья!");
+            player.Health = Math.Min(100, player.Health + 30);
+        }
+    }
+
+    private void PlayerTurn(Enemy enemy)
+    {
+        Console.WriteLine("\nВаш ход:");
+        Console.WriteLine("1 - Атака");
+        Console.WriteLine("2 - Защита");
+
+        string input = Console.ReadLine();
+        if (input == "1")
+        {
+            enemy.TakeDamage(player.Weapon.Damage);
+            Console.WriteLine($"Вы нанесли {player.Weapon.Damage} урона!");
+        }
+        else
+        {
+            if (random.NextDouble() < 0.4)
+            {
+                Console.WriteLine("Вы уклонились от атаки!");
+                player.IsDefending = true;
+            }
+            else
+            {
+                double blockPercent = 0.7 + random.NextDouble() * 0.3;
+                int blockedDamage = (int)(player.Armor.Defense * blockPercent);
+                Console.WriteLine($"Вы подготовились к блокированию (защита: {blockedDamage})");
+                player.BlockAmount = blockedDamage;
+            }
+        }
+    }
+
+    private void EnemyTurn(Enemy enemy)
+    {
+        if (player.IsDefending)
+        {
+            player.IsDefending = false;
+            return;
+        }
+
+        int damage = enemy.Attack(player);
+        if (damage > 0)
+        {
+            if (player.BlockAmount > 0)
+            {
+                damage = Math.Max(0, damage - player.BlockAmount);
+                player.BlockAmount = 0;
+                Console.WriteLine($"Вы заблокировали часть урона! Получено урона: {damage}");
+            }
+            player.Health -= damage;
+            Console.WriteLine($"Враг нанес {damage} урона!");
+        }
+    }
+
+    private bool GetPlayerChoice(string message)
+    {
+        Console.WriteLine($"{message} (y/n)");
+        return Console.ReadLine().ToLower() == "y";
+    }
+}
+
