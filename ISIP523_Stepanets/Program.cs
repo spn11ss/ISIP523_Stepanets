@@ -286,3 +286,47 @@ public class Mage : Enemy
     }
 }
 
+public class Boss : Enemy
+{
+    public Boss(string name, string baseType, double healthMult, double attackMult, double defenseMult, double extraAbilityChance)
+    {
+        Name = name;
+        Health = (int)(GetBaseHealth(baseType) * healthMult);
+        AttackPower = (int)(GetBaseAttack(baseType) * attackMult);
+        Defense = (int)(GetBaseDefense(baseType) * defenseMult);
+    }
+
+    private int GetBaseHealth(string type)
+    {
+        switch (type)
+        {
+            case "Гоблин": return 30;
+            case "Скелет": return 25;
+            case "Маг": return 20;
+            default: return 25;
+        }
+    }
+
+    private int GetBaseAttack(string type)
+    {
+        switch (type)
+        {
+            case "Гоблин": return 8;
+            case "Скелет": return 10;
+            case "Маг": return 12;
+            default: return 10;
+        }
+    }
+
+    private int GetBaseDefense(string type)
+    {
+        switch (type)
+        {
+            case "Гоблин": return 3;
+            case "Скелет": return 4;
+            case "Маг": return 2;
+            default: return 3;
+        }
+    }
+}
+
