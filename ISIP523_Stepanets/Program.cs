@@ -89,4 +89,32 @@ public class Game
         StartCombat(enemy);
     }
 
+    private void OpenChest()
+    {
+        Console.WriteLine("Вы нашли сундук!");
+        int chestContent = random.Next(3);
+        switch (chestContent)
+        {
+            case 0:
+                Console.WriteLine("Внутри лечебное зелье!");
+                player.Health = 100;
+                Console.WriteLine("Здоровье восстановлено до 100!");
+                break;
+            case 1:
+                Weapon newWeapon = Weapon.GenerateRandom(random);
+                Console.WriteLine($"Внутри оружие: {newWeapon.Name} (Урон: {newWeapon.Damage})");
+                Console.WriteLine($"Ваше текущее оружие: {player.Weapon.Name} (Урон: {player.Weapon.Damage})");
+                if (GetPlayerChoice("Взять новое оружие?"))
+                    player.Weapon = newWeapon;
+                break;
+            case 2:
+                Armor newArmor = Armor.GenerateRandom(random);
+                Console.WriteLine($"Внутри доспехи: {newArmor.Name} (Защита: {newArmor.Defense})");
+                Console.WriteLine($"Ваши текущие доспехи: {player.Armor.Name} (Защита: {player.Armor.Defense})");
+                if (GetPlayerChoice("Взять новые доспехи?"))
+                    player.Armor = newArmor;
+                break;
+        }
+    }
+
     
