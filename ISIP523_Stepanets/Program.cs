@@ -227,3 +227,62 @@ public abstract class Enemy
     }
 }
 
+public class Goblin : Enemy
+{
+    public Goblin()
+    {
+        Name = "Гоблин";
+        Health = 30;
+        AttackPower = 8;
+        Defense = 3;
+    }
+
+    public override int Attack(Player player)
+    {
+        if (new Random().NextDouble() < 0.2)
+        {
+            Console.WriteLine("Критический урон гоблина!");
+            return AttackPower * 2;
+        }
+        return base.Attack(player);
+    }
+}
+
+public class Skeleton : Enemy
+{
+    public Skeleton()
+    {
+        Name = "Скелет";
+        Health = 25;
+        AttackPower = 10;
+        Defense = 4;
+    }
+
+    public override int Attack(Player player)
+    {
+        Console.WriteLine("Скелет игнорирует вашу защиту!");
+        return AttackPower;
+    }
+}
+
+public class Mage : Enemy
+{
+    public Mage()
+    {
+        Name = "Маг";
+        Health = 20;
+        AttackPower = 12;
+        Defense = 2;
+    }
+
+    public override int Attack(Player player)
+    {
+        if (new Random().NextDouble() < 0.25)
+        {
+            Console.WriteLine("Маг замораживает вас!");
+            player.IsFrozen = true;
+        }
+        return base.Attack(player);
+    }
+}
+
