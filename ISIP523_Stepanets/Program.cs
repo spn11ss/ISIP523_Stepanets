@@ -208,3 +208,22 @@ public class Player
     public bool IsAlive => Health > 0;
 }
 
+public abstract class Enemy
+{
+    public string Name { get; protected set; }
+    public int Health { get; set; }
+    public int AttackPower { get; protected set; }
+    public int Defense { get; protected set; }
+    public bool IsAlive => Health > 0;
+
+    public virtual int Attack(Player player)
+    {
+        return AttackPower;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+    }
+}
+
