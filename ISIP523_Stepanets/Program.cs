@@ -25,7 +25,7 @@ public class Game
 
     public void Start()
     {
-        Console.WriteLine("Добро пожаловать в текстовый рогалик!");
+        Console.WriteLine("Добро пожаловать в мини-игру рогалик!");
 
         while (player.IsAlive)
         {
