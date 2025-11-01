@@ -330,3 +330,38 @@ public class Boss : Enemy
     }
 }
 
+public class Weapon
+{
+    public string Name { get; }
+    public int Damage { get; }
+
+    public Weapon(string name, int damage)
+    {
+        Name = name;
+        Damage = damage;
+    }
+
+    public static Weapon GenerateRandom(Random random)
+    {
+        string[] names = { "Меч воина", "Секира", "Кинжал", "Посох мага" };
+        return new Weapon(names[random.Next(names.Length)], random.Next(10, 21));
+    }
+}
+
+public class Armor
+{
+    public string Name { get; }
+    public int Defense { get; }
+
+    public Armor(string name, int defense)
+    {
+        Name = name;
+        Defense = defense;
+    }
+
+    public static Armor GenerateRandom(Random random)
+    {
+        string[] names = { "Кольчуга", "Латы", "Кожаная броня", "Мантия" };
+        return new Armor(names[random.Next(names.Length)], random.Next(5, 16));
+    }
+}
