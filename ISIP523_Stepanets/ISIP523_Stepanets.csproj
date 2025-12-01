@@ -33,8 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\..\..\Ent\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\..\..\Ent\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,11 +51,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BD OSNOVA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BD OSNOVA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BD OSNOVA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BD OSNOVA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BD OSNOVA.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BD OSNOVA.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Core.cs" />
+    <Compile Include="Orders.cs">
+      <DependentUpon>BD OSNOVA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service.cs">
+      <DependentUpon>BD OSNOVA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Spares.cs">
+      <DependentUpon>BD OSNOVA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>BD OSNOVA.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="BD OSNOVA.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BD OSNOVA.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="BD OSNOVA.edmx.diagram">
+      <DependentUpon>BD OSNOVA.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BD OSNOVA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BD OSNOVA.Context.cs</LastGenOutput>
+      <DependentUpon>BD OSNOVA.edmx</DependentUpon>
+    </Content>
+    <Content Include="BD OSNOVA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BD OSNOVA.edmx</DependentUpon>
+      <LastGenOutput>BD OSNOVA.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
