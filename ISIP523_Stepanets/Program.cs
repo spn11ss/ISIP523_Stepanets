@@ -163,6 +163,76 @@ namespace ISIP523_Stepanets
                 Console.WriteLine($"На складе: {spare.Quantity} шт.");
             }
         }
+        static void AcceptOrder(TempClient client)
+        {
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                var service = context.Service.First();
+                var brokenSpare = context.Spares.First(s => s.ID == client.BrokenPartID);
+
+                service.TotalCarsProcessed++;
+                Core.CarsProcessed++;
+
+                if (brokenSpare.Quantity > 0)
+                {
+                    brokenSpare.Quantity--;
+                    service.Balance += client.RepairCost;
+                    service.SuccessfulRepairs++;
+
+                    var order = new Orders
+                    {
+                        CarModel = client.CarModel,
+                        BrokenPartID = client.BrokenPartID,
+                        UsedPartID = client.BrokenPartID,
+                        ServiceID = 1,
+                        Status = "Completed",
+                        RepairCost = client.RepairCost,
+                        FinalProfit = client.RepairCost - brokenSpare.PurchasePrice,
+                        OrderDate = DateTime.Now
+                    };
+                    context.Orders.Add(order);
+
+                    Console.WriteLine($"Ремонт выполнен успешно! Получено: {client.RepairCost:C}");
+                }
+                else
+                {
+                    Console.WriteLine("Нужной детали нет на складе! Производим замену случайной деталью...");
+
+                    var randomSpare = GetRandomAvailableSpare(context);
+                    if (randomSpare != null)
+                    {
+                        randomSpare.Quantity--;
+
+                        var penalty = 150.00m;
+                        service.Balance -= penalty;
+
+                        var order = new Orders
+                        {
+                            CarModel = client.CarModel,
+                            BrokenPartID = client.BrokenPartID,
+                            UsedPartID = randomSpare.ID,
+                            ServiceID = 1,
+                            Status = "Failed",
+                            RepairCost = 0,
+                            FinalProfit = -penalty,
+                            OrderDate = DateTime.Now
+                        };
+                        context.Orders.Add(order);
+
+                        Console.WriteLine($"Клиент недоволен! Штраф: {penalty:C}");
+                        Console.WriteLine($"Использована случайная деталь: {randomSpare.SpareName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("На складе нет вообще никаких деталей! Штраф удвоен.");
+                        service.Balance -= 300.00m;
+                    }
+                }
+
+                service.LastUpdated = DateTime.Now;
+                context.SaveChanges();
+            }
+        }
         
     }
 }
