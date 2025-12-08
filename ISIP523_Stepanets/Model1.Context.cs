@@ -13,10 +13,10 @@ namespace ISIP523_Stepanets
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PR7_StepanetsEntities : DbContext
+    public partial class PR7_StepanetsEntities1 : DbContext
     {
-        public PR7_StepanetsEntities()
-            : base("name=PR7_StepanetsEntities")
+        public PR7_StepanetsEntities1()
+            : base("name=PR7_StepanetsEntities1")
         {
         }
     

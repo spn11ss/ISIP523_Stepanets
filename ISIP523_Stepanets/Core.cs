@@ -8,9 +8,9 @@ namespace ISIP523_Stepanets
 {
     internal class Core
     {
-        public static PR7_StepanetsEntities Context = new PR7_StepanetsEntities();
+        public static PR7_StepanetsEntities1 Context = new PR7_StepanetsEntities1();
         public static List<PendingDelivery> PendingDeliveries = new List<PendingDelivery>();
-        public static int CarsProcessed = 0;
+        public static int CarsProcessed { get; set; } = 0;
     }
     public class PendingDelivery
     {

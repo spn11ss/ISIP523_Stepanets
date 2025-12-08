@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="87973eb729f24917a6dc2ec456941cc5" Name="Diagram1" ZoomLevel="45">
+      <Diagram DiagramId="7072b2ed71474760ab85748e1e84dc32" Name="Diagram1">
         <EntityTypeShape EntityType="PR7_StepanetsModel.Orders" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PR7_StepanetsModel.Service" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PR7_StepanetsModel.Spares" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />

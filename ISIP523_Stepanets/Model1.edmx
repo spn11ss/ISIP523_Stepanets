@@ -168,7 +168,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PR7_StepanetsEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="PR7_StepanetsEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Orders" EntityType="Self.Orders" />
           <EntitySet Name="Service" EntityType="Self.Service" />
           <EntitySet Name="Spares" EntityType="Self.Spares" />
@@ -187,7 +187,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище PR7_StepanetsModelContainer" CdmEntityContainer="PR7_StepanetsEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PR7_StepanetsModelContainer" CdmEntityContainer="PR7_StepanetsEntities1">
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="PR7_StepanetsModel.Orders">
               <MappingFragment StoreEntitySet="Orders">

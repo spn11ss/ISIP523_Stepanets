@@ -43,15 +43,39 @@ namespace ISIP523_Stepanets
                 Console.Clear();
                 DisplayGameStatus();
 
-                DisplayActionMenu();
+                var clientInfo = GenerateRandomClient();
+                DisplayClientRequest(clientInfo);
 
+                DisplayActionMenu();
+                var choice = GetUserChoice();
+
+                switch (choice)
+                {
+                    case 1: AcceptOrder(clientInfo); break;
+                    case 2: DeclineOrder(clientInfo); break;
+                    case 3: ShowPurchaseMenu(); break;
+                    case 4: ShowWarehouseStatus(); break;
+                    case 5: ShowStatistics(); break;
+                    case 6: return;
+                    default: Console.WriteLine("Неверный выбор!"); break;
+                }
+                ProcessDeliveries();
+                CheckGameOver();
+
+                Console.WriteLine("\nНажмите любую клавишу...");
+                Console.ReadKey();
             }
 
+        }
+        static int GetUserChoice()
+        {
+            Console.Write("Ваш выбор: ");
+            return int.TryParse(Console.ReadLine(), out int choice) ? choice : 0;
         }
 
         static void InitializeGame()
         {
-            using (var context = Core.Context)
+            using (var context = new PR7_StepanetsEntities1())
             {
                 if (!context.Service.Any())
                 {
@@ -73,8 +97,6 @@ namespace ISIP523_Stepanets
                         new Spares { SpareName = "Тормозные колодки", PurchasePrice = 80.00m, Quantity = 3, MinimumStockLevel = 2, RepairMarkup = 1.5m },
                         new Spares { SpareName = "Масляный фильтр", PurchasePrice = 15.00m, Quantity = 5, MinimumStockLevel = 3, RepairMarkup = 1.8m },
                         new Spares { SpareName = "Воздушный фильтр", PurchasePrice = 25.00m, Quantity = 4, MinimumStockLevel = 2, RepairMarkup = 1.6m },
-                        new Spares { SpareName = "Свечи зажигания", PurchasePrice = 45.00m, Quantity = 6, MinimumStockLevel = 3, RepairMarkup = 1.7m },
-                        new Spares { SpareName = "Аккумулятор", PurchasePrice = 120.00m, Quantity = 2, MinimumStockLevel = 1, RepairMarkup = 1.4m }
                     };
 
                     context.Spares.AddRange(spares);
@@ -86,7 +108,7 @@ namespace ISIP523_Stepanets
         }
         static void DisplayGameStatus()
         {
-            using (var context = Core.Context)
+            using (var context = new PR7_StepanetsEntities1())
             {
                 var service = context.Service.First();
                 Console.WriteLine("=== АВТОСЕРВИС ===");
@@ -108,5 +130,39 @@ namespace ISIP523_Stepanets
             Console.WriteLine("5 - Статистика");
             Console.WriteLine("6 - Выйти из игры");
         }
+        static TempClient GenerateRandomClient() 
+        {
+            var random = new Random();
+
+            var carsCount = CarData.Cars.Count;
+            var randomCar = CarData.Cars[random.Next(carsCount)];
+
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                var spares = context.Spares.ToList();
+                var randomSpare = spares[random.Next(spares.Count)];
+                var repairCost = randomSpare.PurchasePrice * randomSpare.RepairMarkup; 
+
+                return new TempClient
+                {
+                    CarModel = $"{randomCar.Brand} {randomCar.Model} ({randomCar.Year})",
+                    BrokenPartID = randomSpare.ID,
+                    BrokenPartName = randomSpare.SpareName,
+                    RepairCost = repairCost
+                };
+            }
+        }
+        static void DisplayClientRequest(TempClient client)
+        {
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                var spare = context.Spares.First(s => s.ID == client.BrokenPartID);
+                Console.WriteLine($"\nПриехал клиент на {client.CarModel}");
+                Console.WriteLine($"Поломка: {client.BrokenPartName}");
+                Console.WriteLine($"Стоимость ремонта: {client.RepairCost:C}");
+                Console.WriteLine($"На складе: {spare.Quantity} шт.");
+            }
+        }
+        
     }
 }
