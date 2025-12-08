@@ -399,6 +399,29 @@ namespace ISIP523_Stepanets
                 }
             }
         }
-        
+        static void ProcessDeliveries()
+        {
+            var deliveriesToProcess = Core.PendingDeliveries
+                .Where(d => Core.CarsProcessed >= d.OrderPlacedAtCar + 2)
+                .ToList();
+
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                foreach (var delivery in deliveriesToProcess)
+                {
+                    var spare = context.Spares.First(s => s.ID == delivery.SpareID);
+                    spare.Quantity += delivery.Quantity;
+
+                    Console.WriteLine($"Поставка получена: {delivery.SpareName} - {delivery.Quantity} шт.");
+                    Core.PendingDeliveries.Remove(delivery);
+                }
+
+                if (deliveriesToProcess.Any())
+                {
+                    context.SaveChanges();
+                }
+            }
+        }
+       
     }
 }
