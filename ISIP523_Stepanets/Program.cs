@@ -267,6 +267,67 @@ namespace ISIP523_Stepanets
                 Console.WriteLine($"Заказ отклонен. Штраф: {penalty:C}");
             }
         }
+        static void ShowPurchaseMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ПОКУПКА ЗАПЧАСТЕЙ ===");
+
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                var spares = context.Spares.ToList();
+                var service = context.Service.First();
+
+                for (int i = 0; i < spares.Count; i++)
+                {
+                    var spare = spares[i];
+                    Console.WriteLine($"{i + 1}. {spare.SpareName} - {spare.PurchasePrice:C} (на складе: {spare.Quantity})");
+                }
+
+                Console.Write("\nВыберите номер запчасти: ");
+                if (int.TryParse(Console.ReadLine(), out int spareIndex) && spareIndex >= 1 && spareIndex <= spares.Count)
+                {
+                    var selectedSpare = spares[spareIndex - 1];
+
+                    Console.Write("Введите количество: ");
+                    if (int.TryParse(Console.ReadLine(), out int quantity) && quantity > 0)
+                    {
+                        var totalCost = selectedSpare.PurchasePrice * quantity;
+
+                        if (service.Balance >= totalCost)
+                        {
+                            service.Balance -= totalCost;
+                            service.LastUpdated = DateTime.Now;
+
+                            var delivery = new PendingDelivery
+                            {
+                                SpareID = selectedSpare.ID,
+                                SpareName = selectedSpare.SpareName,
+                                Quantity = quantity,
+                                TotalCost = totalCost,
+                                OrderPlacedAtCar = Core.CarsProcessed
+                            };
+
+                            Core.PendingDeliveries.Add(delivery);
+                            context.SaveChanges();
+
+                            Console.WriteLine($"Заказ оформлен! Поставка через 2 машины. Списано: {totalCost:C}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Недостаточно средств!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверное количество!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Неверный выбор!");
+                }
+            }
+        }
         
     }
 }
