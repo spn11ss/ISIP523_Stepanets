@@ -422,6 +422,26 @@ namespace ISIP523_Stepanets
                 }
             }
         }
-       
+        static void CheckGameOver()
+        {
+            using (var context = new PR7_StepanetsEntities1())
+            {
+                var service = context.Service.First();
+
+                if (service.Balance <= 0)
+                {
+                    Console.WriteLine("\nИГРА ОКОНЧЕНА! Вы банкрот!!!");
+                    Console.WriteLine($"Итоговый счет: Успешных ремонтов - {service.SuccessfulRepairs}");
+                    Environment.Exit(0);
+                }
+
+                if (service.Balance >= 5000.00m)
+                {
+                    Console.WriteLine("\nПОБЕДА! Вы заработали 5000 рублей!");
+                    Console.WriteLine($"Итоговый счет: Успешных ремонтов - {service.SuccessfulRepairs}");
+                    Environment.Exit(0);
+                }
+            }
+        }
     }
 }
