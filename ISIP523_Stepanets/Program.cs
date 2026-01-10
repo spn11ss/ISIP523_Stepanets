@@ -468,7 +468,57 @@ namespace ISIP523_Stepanets
             Console.WriteLine("Корзина очищена.");
         }
 
-       
+        static void ShowOrderHistory()
+        {
+            if (currentUser == null)
+            {
+                Console.WriteLine("Сначала войдите в систему!");
+                return;
+            }
+
+            var orders = Core.Context.Orders
+                .Where(o => o.UserID == currentUser.ID)
+                .OrderByDescending(o => o.OrderDate)
+                .Join(Core.Context.PickupPoints,
+                      o => o.PickupPointID,
+                      p => p.ID,
+                      (o, p) => new { Order = o, PickupPoint = p })
+                .ToList();
+
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("\nИстория заказов пуста.");
+                return;
+            }
+
+            Console.WriteLine("\nИстория заказов:");
+
+            foreach (var orderInfo in orders)
+            {
+                Console.WriteLine($"\nЗаказ №{orderInfo.Order.ID} от {orderInfo.Order.OrderDate:g}");
+                Console.WriteLine($"Пункт выдачи: {orderInfo.PickupPoint.Address}");
+                Console.WriteLine($"Часы работы: {orderInfo.PickupPoint.WorkingHours}");
+                Console.WriteLine("Товары:");
+
+                var orderItems = Core.Context.OrderItems
+                    .Where(i => i.OrderID == orderInfo.Order.ID)
+                    .Join(Core.Context.Products,
+                          i => i.ProductID,
+                          p => p.ID,
+                          (i, p) => new { OrderItem = i, Product = p })
+                    .ToList();
+
+                decimal total = 0;
+                foreach (var item in orderItems)
+                {
+                    decimal itemTotal = item.OrderItem.Price * item.OrderItem.Quantity;
+                    total += itemTotal;
+                    Console.WriteLine($" - {item.Product.Name} × {item.OrderItem.Quantity} шт. — {item.OrderItem.Price}₽/шт = {itemTotal}₽");
+                }
+                Console.WriteLine($"Итого по заказу: {total}₽");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
 
         static void AddProductsAndPickupPoints()
         {
