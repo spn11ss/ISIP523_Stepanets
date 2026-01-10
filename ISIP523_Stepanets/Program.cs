@@ -88,7 +88,7 @@ namespace ISIP523_Stepanets
             Core.Context.Users.Add(dbUser);
             Core.Context.SaveChanges();
 
-            Console.WriteLine("\n✅ Вы успешно зарегистрировались!");
+            Console.WriteLine("\n Вы успешно зарегистрировались!");
             currentUser = dbUser;
             UserMenu();
         }
