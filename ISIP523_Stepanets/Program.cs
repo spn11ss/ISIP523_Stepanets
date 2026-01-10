@@ -140,7 +140,79 @@ namespace ISIP523_Stepanets
             }
         }
 
-       
+        static void AddProductToBasket()
+        {
+            if (currentUser == null)
+            {
+                Console.WriteLine("Сначала войдите в систему!");
+                return;
+            }
+
+            Console.Write("\nХотите добавить в корзину какой-то товар? (да/нет): ");
+            string ans = Console.ReadLine()?.Trim().ToLower();
+
+            if (ans != "да")
+                return;
+
+            Console.Write("\nВведите ID товара, который хотите добавить в корзину: ");
+            if (!int.TryParse(Console.ReadLine(), out int productId))
+            {
+                Console.WriteLine(" Неверный формат ID.");
+                return;
+            }
+
+            var product = Core.Context.Products.FirstOrDefault(p => p.ID == productId);
+            if (product == null)
+            {
+                Console.WriteLine(" Товар с таким ID не найден.");
+                return;
+            }
+
+            Console.Write("Введите количество: ");
+            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine(" Некорректное количество!");
+                return;
+            }
+
+            // Проверка товара на складе
+            if (quantity > product.Quantity)
+            {
+                Console.WriteLine($" Недостаточно товара на складе. В наличии: {product.Quantity} шт.");
+                return;
+            }
+
+            // Есть ли товар в корзине
+            var existingCartItem = Core.Context.CartItems
+                .FirstOrDefault(c => c.UserID == currentUser.ID && c.ProductID == productId);
+
+            if (existingCartItem != null)
+            {
+                // Проверяем, не превысим ли общее количество с текущим запасом
+                if (existingCartItem.Quantity + quantity > product.Quantity)
+                {
+                    Console.WriteLine($" Нельзя добавить больше {product.Quantity} шт. этого товара.");
+                    return;
+                }
+
+                existingCartItem.Quantity += quantity;
+                Console.WriteLine($"\n Обновлено количество {product.Name}: теперь {existingCartItem.Quantity} шт.");
+            }
+            else
+            {
+                CartItems newCartItem = new CartItems
+                {
+                    UserID = currentUser.ID,
+                    ProductID = productId,
+                    Quantity = quantity
+                };
+                Core.Context.CartItems.Add(newCartItem);
+                Console.WriteLine($"\n {product.Name} x{quantity} добавлен в корзину!");
+            }
+
+            Core.Context.SaveChanges();
+        }
+
 
         static void AddProductsAndPickupPoints()
         {
@@ -234,7 +306,7 @@ namespace ISIP523_Stepanets
             }
         }
 
-      
+       
 
         static void Main()
         {
