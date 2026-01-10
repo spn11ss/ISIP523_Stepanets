@@ -6,7 +6,54 @@ namespace ISIP523_Stepanets
 {
     internal class Program
     {
-        
+        static Users currentUser = null;
+
+        static void UserMenu()
+        {
+            bool useroutt = true;
+            while (useroutt)
+            {
+                Console.WriteLine("\n МЕНЮ:");
+                Console.WriteLine("1. Просмотр товаров");
+                Console.WriteLine("2. Просмотр корзины");
+                Console.WriteLine("3. Оформить заказ");
+                Console.WriteLine("4. История заказов");
+                Console.WriteLine("0. Выход из аккаунта");
+
+                Console.Write("Введите выбор: ");
+                int userchoice = Convert.ToInt32(Console.ReadLine());
+
+                switch (userchoice)
+                {
+                    case 1:
+                        WatchProducts();
+                        AddProductToBasket();
+                        break;
+
+                    case 2:
+                        ShowBasket();
+                        break;
+
+                    case 3:
+                        CreateOrder();
+                        break;
+
+                    case 4:
+                        ShowOrderHistory();
+                        break;
+
+                    case 0:
+                        useroutt = false;
+                        currentUser = null;
+                        Console.WriteLine("Вы вышли из аккаунта.");
+                        break;
+
+                    default:
+                        Console.WriteLine("Неправильный пункт меню.");
+                        break;
+                }
+            }
+        }
 
         static void Registration()
         {
@@ -76,7 +123,7 @@ namespace ISIP523_Stepanets
             }
         }
 
-       
+        
 
         static void AddProductsAndPickupPoints()
         {
