@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace ISIP523_Stepanets
 {
-    internal class Program
+    internal class Core
     {
-        static void Main(string[] args)
-        {
-            int n;
-        }
+        public static PR8_cEntities Context = new PR8_cEntities();
     }
 }

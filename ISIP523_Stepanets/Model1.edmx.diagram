@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d96a566ab5ce4696b4d2d2d4d8df0bd1" Name="Diagram1" ZoomLevel="47">
+        <EntityTypeShape EntityType="PR8_cModel.CartItems" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.OrderItems" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.Orders" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.PickupPoints" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.Products" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR8_cModel.Users" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="PR8_cModel.FK__CartItems__Produ__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="PR8_cModel.FK__CartItems__UserI__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="PR8_cModel.FK__OrderItem__Order__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="PR8_cModel.FK__OrderItem__Produ__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="PR8_cModel.FK__Orders__PickupPo__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="PR8_cModel.FK__Orders__UserID__534D60F1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
