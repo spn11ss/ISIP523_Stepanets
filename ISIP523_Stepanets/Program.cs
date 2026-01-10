@@ -388,6 +388,86 @@ namespace ISIP523_Stepanets
             Console.WriteLine($"Часы работы: {pickupPoint.WorkingHours}");
         }
 
+        static void BuyAllBasket()
+        {
+            var cartItems = Core.Context.CartItems
+                .Where(c => c.UserID == currentUser.ID)
+                .Join(Core.Context.Products,
+                      c => c.ProductID,
+                      p => p.ID,
+                      (c, p) => new { CartItem = c, Product = p })
+                .ToList();
+
+            if (cartItems.Count == 0)
+            {
+                Console.WriteLine("\n Корзина пуста!");
+                return;
+            }
+
+            Console.WriteLine("\n Доступные пункты выдачи:");
+            var pickupPoints = Core.Context.PickupPoints.ToList();
+            foreach (var p in pickupPoints)
+            {
+                Console.WriteLine($"{p.ID}. {p.Address} (Часы работы: {p.WorkingHours})");
+            }
+
+            Console.Write("Выберите пункт выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pickupPointId))
+            {
+                Console.WriteLine(" Неверный формат ID.");
+                return;
+            }
+
+            var pickupPoint = pickupPoints.FirstOrDefault(p => p.ID == pickupPointId);
+            if (pickupPoint == null)
+            {
+                Console.WriteLine(" Пункт выдачи не найден!");
+                return;
+            }
+
+            // Создаем заказ
+            Orders order = new Orders
+            {
+                UserID = currentUser.ID,
+                PickupPointID = pickupPoint.ID,
+                OrderDate = DateTime.Now
+            };
+            Core.Context.Orders.Add(order);
+            Core.Context.SaveChanges();
+
+            decimal totalSum = 0;
+
+            foreach (var item in cartItems)
+            {
+                // Добавляем товар в OrderItems
+                OrderItems orderItem = new OrderItems
+                {
+                    OrderID = order.ID,
+                    ProductID = item.Product.ID,
+                    Quantity = item.CartItem.Quantity,
+                    Price = item.Product.Price
+                };
+                Core.Context.OrderItems.Add(orderItem);
+
+                // Увеличиваем общую сумму
+                totalSum += item.Product.Price * item.CartItem.Quantity;
+
+                // Обновляем количество товара на складе
+                item.Product.Quantity -= item.CartItem.Quantity;
+
+                // Удаляем товар из корзины
+                Core.Context.CartItems.Remove(item.CartItem);
+            }
+
+            Core.Context.SaveChanges();
+
+            Console.WriteLine($"\n Заказ №{order.ID} оформлен!");
+            Console.WriteLine($"Общая сумма: {totalSum}₽");
+            Console.WriteLine($"Забрать по адресу: {pickupPoint.Address}");
+            Console.WriteLine($"Часы работы: {pickupPoint.WorkingHours}");
+            Console.WriteLine("Корзина очищена.");
+        }
+
        
 
         static void AddProductsAndPickupPoints()
