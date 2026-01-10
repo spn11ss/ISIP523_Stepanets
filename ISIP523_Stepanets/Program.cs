@@ -306,7 +306,31 @@ namespace ISIP523_Stepanets
             }
         }
 
-       
+        public static void ClearDatabase()
+        {
+            Console.Write("Вы действительно хотите очистить базу данных? (да/нет): ");
+            string answer = Console.ReadLine()?.Trim().ToLower();
+
+            if (answer != "да")
+            {
+                Console.WriteLine("Очистка отменена.");
+                return;
+            }
+
+            Console.WriteLine("Очистка базы данных...");
+
+            // Очищаем в правильном порядке (с учетом внешних ключей)
+            Core.Context.CartItems.RemoveRange(Core.Context.CartItems);
+            Core.Context.OrderItems.RemoveRange(Core.Context.OrderItems);
+            Core.Context.Orders.RemoveRange(Core.Context.Orders);
+            Core.Context.Users.RemoveRange(Core.Context.Users);
+            Core.Context.Products.RemoveRange(Core.Context.Products);
+            Core.Context.PickupPoints.RemoveRange(Core.Context.PickupPoints);
+
+            Core.Context.SaveChanges();
+
+            Console.WriteLine("Все данные из базы успешно удалены!");
+        }
 
         static void Main()
         {
