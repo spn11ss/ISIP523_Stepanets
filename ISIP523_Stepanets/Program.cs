@@ -123,7 +123,24 @@ namespace ISIP523_Stepanets
             }
         }
 
-        
+        static void WatchProducts()
+        {
+            Console.WriteLine("\n НАШИ ТОВАРЫ");
+            var products = Core.Context.Products.ToList();
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("Товаров пока нет в базе данных.");
+                return;
+            }
+
+            foreach (var p in products)
+            {
+                Console.WriteLine($"\n{p.ID}. {p.Name}\nОписание: {p.Description}\nЦена: {p.Price}₽\nВ наличии: {p.Quantity} шт.\nКатегория: {p.Category}");
+            }
+        }
+
+       
 
         static void AddProductsAndPickupPoints()
         {
@@ -217,7 +234,7 @@ namespace ISIP523_Stepanets
             }
         }
 
-       
+      
 
         static void Main()
         {
