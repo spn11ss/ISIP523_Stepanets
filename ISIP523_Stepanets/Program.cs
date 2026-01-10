@@ -6,7 +6,7 @@ namespace ISIP523_Stepanets
 {
     internal class Program
     {
-       
+        
 
         static void Registration()
         {
@@ -41,12 +41,42 @@ namespace ISIP523_Stepanets
             Core.Context.Users.Add(dbUser);
             Core.Context.SaveChanges();
 
-            Console.WriteLine("\n✅ Вы успешно зарегистрировались!");
+            Console.WriteLine("\n Вы успешно зарегистрировались!");
             currentUser = dbUser;
             UserMenu();
         }
 
-        
+        static void Login()
+        {
+            Console.WriteLine("\n~~~ Войдите в аккаунт ~~~");
+            Console.Write("Имя пользователя: ");
+            string username = Console.ReadLine();
+            Console.Write("Пароль: ");
+            string password = Console.ReadLine();
+
+            var user = Core.Context.Users.FirstOrDefault(x => x.Login == username);
+            if (user == null)
+            {
+                Console.WriteLine("\n❌ Пользователь с таким именем не найден.");
+                return;
+            }
+            else
+            {
+                //проверка пароля 
+                if (user.PasswordHash == password)
+                {
+                    Console.WriteLine($"\n Вы успешно вошли в аккаунт, {user.Name}!");
+                    currentUser = user;
+                    UserMenu();
+                }
+                else
+                {
+                    Console.WriteLine("\n Неверный пароль.");
+                }
+            }
+        }
+
+       
 
         static void AddProductsAndPickupPoints()
         {
@@ -140,7 +170,7 @@ namespace ISIP523_Stepanets
             }
         }
 
-      
+       
 
         static void Main()
         {
