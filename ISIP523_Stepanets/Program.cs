@@ -104,7 +104,7 @@ namespace ISIP523_Stepanets
             var user = Core.Context.Users.FirstOrDefault(x => x.Login == username);
             if (user == null)
             {
-                Console.WriteLine("\n❌ Пользователь с таким именем не найден.");
+                Console.WriteLine("\n Пользователь с таким именем не найден.");
                 return;
             }
             else
