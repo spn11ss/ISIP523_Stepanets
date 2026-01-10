@@ -247,6 +247,42 @@ namespace ISIP523_Stepanets
             Console.WriteLine($"\n Итого: {totalSum}₽");
         }
 
+        static void CreateOrder()
+        {
+            if (currentUser == null)
+            {
+                Console.WriteLine("Сначала войдите в систему!");
+                return;
+            }
+
+            Console.WriteLine("\nВыберите, что хотите заказать:");
+            Console.WriteLine("1. Купить конкретный товар из корзины");
+            Console.WriteLine("2. Купить всю корзину");
+            Console.WriteLine("0. Отмена");
+
+            Console.Write("Введите выбор: ");
+            int orderchoice = Convert.ToInt32(Console.ReadLine());
+
+            switch (orderchoice)
+            {
+                case 1:
+                    BuyOneProduct();
+                    break;
+
+                case 2:
+                    BuyAllBasket();
+                    break;
+
+                case 0:
+                    Console.WriteLine(" Отменено.");
+                    break;
+
+                default:
+                    Console.WriteLine(" Неверный пункт меню.");
+                    break;
+            }
+        }
+
        
 
         static void AddProductsAndPickupPoints()
