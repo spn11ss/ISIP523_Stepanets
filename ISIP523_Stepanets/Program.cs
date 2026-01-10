@@ -83,12 +83,12 @@ namespace ISIP523_Stepanets
             {
                 Name = username,
                 Login = username,
-                PasswordHash = password 
+                PasswordHash = password
             };
             Core.Context.Users.Add(dbUser);
             Core.Context.SaveChanges();
 
-            Console.WriteLine("\n Вы успешно зарегистрировались!");
+            Console.WriteLine("\n✅ Вы успешно зарегистрировались!");
             currentUser = dbUser;
             UserMenu();
         }
