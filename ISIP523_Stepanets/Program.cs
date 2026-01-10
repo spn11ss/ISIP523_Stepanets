@@ -4,6 +4,50 @@ using System.Linq;
 
 namespace ISIP523_Stepanets
 {
+    internal class Program
+    {
+       
+
+        static void Registration()
+        {
+            Console.WriteLine("\n~~~ Регистрация ~~~");
+            Console.Write("Введите имя пользователя: ");
+            string username = Console.ReadLine();
+
+            var exist = Core.Context.Users.FirstOrDefault(x => x.Login == username);
+            if (exist != null)
+            {
+                Console.WriteLine("\n Пользователь с таким именем уже существует.");
+                return;
+            }
+
+            Console.Write("Введите пароль: ");
+            string password = Console.ReadLine();
+            Console.Write("Повторите пароль: ");
+            string passwordRepeat = Console.ReadLine();
+
+            if (password != passwordRepeat)
+            {
+                Console.WriteLine("\n Пароли не совпадают!");
+                return;
+            }
+
+            Users dbUser = new Users
+            {
+                Name = username,
+                Login = username,
+                PasswordHash = password 
+            };
+            Core.Context.Users.Add(dbUser);
+            Core.Context.SaveChanges();
+
+            Console.WriteLine("\n✅ Вы успешно зарегистрировались!");
+            currentUser = dbUser;
+            UserMenu();
+        }
+
+        
+
         static void AddProductsAndPickupPoints()
         {
             if (!Core.Context.Products.Any())
@@ -96,6 +140,7 @@ namespace ISIP523_Stepanets
             }
         }
 
+      
 
         static void Main()
         {
@@ -153,3 +198,4 @@ namespace ISIP523_Stepanets
             }
         }
     }
+}
