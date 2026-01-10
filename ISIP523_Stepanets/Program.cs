@@ -283,6 +283,111 @@ namespace ISIP523_Stepanets
             }
         }
 
+        static void BuyOneProduct()
+        {
+            var cartItems = Core.Context.CartItems
+                .Where(c => c.UserID == currentUser.ID)
+                .Join(Core.Context.Products,
+                      c => c.ProductID,
+                      p => p.ID,
+                      (c, p) => new { CartItem = c, Product = p })
+                .ToList();
+
+            if (cartItems.Count == 0)
+            {
+                Console.WriteLine("\n Корзина пуста!");
+                return;
+            }
+
+            Console.WriteLine("\n Товары в вашей корзине:");
+            for (int i = 0; i < cartItems.Count; i++)
+            {
+                var item = cartItems[i];
+                decimal itemTotal = item.Product.Price * item.CartItem.Quantity;
+                Console.WriteLine($"{i + 1}. {item.Product.Name} — {item.Product.Price}₽ × {item.CartItem.Quantity} = {itemTotal}₽");
+            }
+
+            Console.Write("Введите номер товара для покупки: ");
+            if (!int.TryParse(Console.ReadLine(), out int itemNumber) || itemNumber < 1 || itemNumber > cartItems.Count)
+            {
+                Console.WriteLine(" Некорректный номер товара!");
+                return;
+            }
+
+            var selectedItem = cartItems[itemNumber - 1];
+            var cartItem = selectedItem.CartItem;
+            var product = selectedItem.Product;
+
+            Console.Write($"Введите количество для покупки (макс. {cartItem.Quantity}): ");
+            if (!int.TryParse(Console.ReadLine(), out int qty) || qty <= 0 || qty > cartItem.Quantity)
+            {
+                Console.WriteLine(" Некорректное количество!");
+                return;
+            }
+
+            Console.WriteLine("\n Доступные пункты выдачи:");
+            var pickupPoints = Core.Context.PickupPoints.ToList();
+            foreach (var p in pickupPoints)
+            {
+                Console.WriteLine($"{p.ID}. {p.Address} (Часы работы: {p.WorkingHours})");
+            }
+
+            Console.Write("Выберите пункт выдачи: ");
+            if (!int.TryParse(Console.ReadLine(), out int pickupPointId))
+            {
+                Console.WriteLine(" Неверный формат ID.");
+                return;
+            }
+
+            var pickupPoint = pickupPoints.FirstOrDefault(p => p.ID == pickupPointId);
+            if (pickupPoint == null)
+            {
+                Console.WriteLine(" Пункт выдачи не найден!");
+                return;
+            }
+
+            // Создаем заказ
+            Orders order = new Orders
+            {
+                UserID = currentUser.ID,
+                PickupPointID = pickupPoint.ID,
+                OrderDate = DateTime.Now
+            };
+            Core.Context.Orders.Add(order);
+            Core.Context.SaveChanges();
+
+            // Добавляем товар в OrderItems
+            OrderItems orderItem = new OrderItems
+            {
+                OrderID = order.ID,
+                ProductID = product.ID,
+                Quantity = qty,
+                Price = product.Price
+            };
+            Core.Context.OrderItems.Add(orderItem);
+
+            // Обновляем количество товара на складе
+            product.Quantity -= qty;
+
+            // Обновляем или удаляем товар из корзины
+            if (cartItem.Quantity > qty)
+            {
+                cartItem.Quantity -= qty;
+            }
+            else
+            {
+                Core.Context.CartItems.Remove(cartItem);
+            }
+
+            Core.Context.SaveChanges();
+
+            decimal totalPrice = product.Price * qty;
+            Console.WriteLine($"Заказ №{order.ID} оформлен!");
+            Console.WriteLine($"Товар '{product.Name}' x{qty} куплен! Стоимость: {totalPrice}₽");
+            Console.WriteLine($"Забрать по адресу: {pickupPoint.Address}");
+            Console.WriteLine($"Часы работы: {pickupPoint.WorkingHours}");
+        }
+
        
 
         static void AddProductsAndPickupPoints()
