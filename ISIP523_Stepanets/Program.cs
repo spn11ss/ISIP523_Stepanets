@@ -213,6 +213,41 @@ namespace ISIP523_Stepanets
             Core.Context.SaveChanges();
         }
 
+        static void ShowBasket()
+        {
+            if (currentUser == null)
+            {
+                Console.WriteLine("Сначала войдите в систему!");
+                return;
+            }
+
+            var cartItems = Core.Context.CartItems
+                .Where(c => c.UserID == currentUser.ID)
+                .Join(Core.Context.Products,
+                      c => c.ProductID,
+                      p => p.ID,
+                      (c, p) => new { CartItem = c, Product = p })
+                .ToList();
+
+            if (cartItems.Count == 0)
+            {
+                Console.WriteLine("\n Корзина пуста!");
+                return;
+            }
+
+            Console.WriteLine("\n КОРЗИНА");
+            decimal totalSum = 0;
+
+            foreach (var item in cartItems)
+            {
+                decimal itemSum = item.Product.Price * item.CartItem.Quantity;
+                Console.WriteLine($"\n{item.Product.Name} — {item.Product.Price}₽ × {item.CartItem.Quantity} = {itemSum}₽");
+                totalSum += itemSum;
+            }
+            Console.WriteLine($"\n Итого: {totalSum}₽");
+        }
+
+       
 
         static void AddProductsAndPickupPoints()
         {
